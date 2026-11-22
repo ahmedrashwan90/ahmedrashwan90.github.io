@@ -1,0 +1,122 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import SiteHeader from './SiteHeader.astro';
+import SiteFooter from './SiteFooter.astro';
+import { basePath, projects } from '../data/projects';
+import { Picture } from 'astro:assets';
+import portrait from '../assets/ahmed-rashwan.jpeg';
+import { tools } from '../data/tools';
+const lang = Astro.props.lang ?? 'ar';
+const en = lang === 'en';
+const L = en ? 'en' : 'ar';
+const root = en ? '/en/' : '/ar/';
+const copy = en ? {
+  role:'Marketing Strategist & Performance Marketer', heroA:'Marketing built on ', heroB:'understanding your business', heroC:', not guesswork.', intro:'I work with business owners on every step: understanding the market and the customer, building the plan, then content and ads. After that, we look at the results and improve.',
+  meta:'Working with businesses in Egypt and the Arab world', tools:'Tools I work with every day',
+  services:'What I can help you with', servicesLead:'I handle strategy, planning, ads and creative direction. A small team works with me on design and content production.',
+  work:'Selected work', workLead:'Real projects across different industries. Open any of them to see the details, designs and captions.',
+  approach:'How we work together', path:['Understand','Plan','Execute','Improve'], steps:['Understand your business','Build the plan','Execute','Review and improve'], stepBodies:['We talk about your goal, your customer, your product and where things stand today.','A practical plan: what we’ll do, for whom, and in what order.','Content, designs and campaigns, done with the team.','We look at the results and adjust whatever needs adjusting.'],
+  contact:'Have a project? Let’s talk', contactBody:'Send me a short note about your business and what you want to achieve, and I’ll get back to you soon.', send:'Send an email', copy:'Copy email', copied:'Email copied', copyHint:'Copy it manually: a.essam.rashwan@gmail.com',
+} : {
+  role:'استراتيجي تسويق ومسوق أداء', heroA:'تسويق مبني على ', heroB:'فهم مشروعك', heroC:'، مش على التخمين.', intro:'بشتغل مع أصحاب المشاريع من أول ما نفهم السوق والعميل، لحد الخطة والمحتوى والإعلانات. وبعدها بنراجع النتايج ونطوّر.',
+  meta:'بشتغل مع مشاريع في مصر والدول العربية', tools:'أدوات بشتغل بيها كل يوم',
+  services:'أقدر أساعدك في إيه', servicesLead:'أنا مسؤول عن الاستراتيجية والتخطيط والإعلانات والتوجيه الإبداعي، ومعايا فريق صغير بيتولى التصميم وكتابة المحتوى.',
+  work:'شغل اشتغلت عليه', workLead:'مشاريع حقيقية في مجالات مختلفة. افتح أي مشروع وشوف التفاصيل والتصميمات والكابشنات.',
+  approach:'إزاي بنشتغل مع بعض', path:['نفهم','نخطط','ننفذ','نطوّر'], steps:['نفهم مشروعك','نحط الخطة','ننفذ','نراجع ونطوّر'], stepBodies:['بنتكلم عن هدفك، وعميلك، ومنتجك، والوضع الحالي.','خطة عملية: هنعمل إيه، لمين، وبأي ترتيب.','المحتوى والتصميمات والحملات، مع الفريق.','بنشوف النتايج ونعدّل اللي محتاج يتعدّل.'],
+  contact:'عندك مشروع؟ خلينا نتكلم', contactBody:'ابعتلي نبذة عن مشروعك والهدف اللي عايز توصله، وهرد عليك في أقرب وقت.', send:'ابعتلي إيميل', copy:'انسخ الإيميل', copied:'اتنسخ الإيميل', copyHint:'انسخه يدويًا: a.essam.rashwan@gmail.com',
+};
+// Simple stroke icons (24×24), drawn inline so they follow currentColor.
+const icons = {
+  target:'<circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.5"/>',
+  pen:'<path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"/>',
+  megaphone:'<path d="m3 11 15-6v14L3 13z"/><path d="M11.6 16.8a3 3 0 1 1-5.8-1.6"/>',
+  funnel:'<path d="M3 4h18l-7 8v6l-4 2v-8z"/>',
+  chart:'<path d="M3 3v18h18"/><path d="m7 15 4-4 3 3 6-6"/>',
+  spark:'<path d="M12 3v4M12 17v4M3 12h4M17 12h4"/><path d="m6 6 2.5 2.5M15.5 15.5 18 18M18 6l-2.5 2.5M8.5 15.5 6 18"/>',
+};
+const services = [
+  {icon:icons.target,
+   ar:{t:'خطة تسويق واضحة',d:'قبل أي إعلان أو بوست، بنفهم السوق والمنافسين والعميل، ونحدد هنكلم مين، وهنقوله إيه، وفين.',i:['بحث السوق والمنافسين','شخصيات العملاء','التموضع والرسالة','الأهداف والميزانية والقنوات']},
+   en:{t:'A clear marketing plan',d:'Before any ad or post, we get to know the market, the competitors and the customer, then decide who we talk to, what we say, and where.',i:['Market & competitor research','Buyer personas','Positioning & messaging','Goals, budget & channels']}},
+  {icon:icons.pen,
+   ar:{t:'محتوى وتوجيه إبداعي',d:'كل بوست عارف هو بيكلم مين وعايز منه إيه. أنا بحدد الفكرة والرسالة، والفريق بينفذ التصميم والكتابة.',i:['استراتيجية السوشيال ميديا','خطة محتوى شهرية','أفكار الحملات ورسايلها','مراجعة التصميمات والكابشنات']},
+   en:{t:'Content & creative direction',d:'Every post knows who it’s for and what it should do. I set the idea and the message; the team handles design and copy.',i:['Social media strategy','Monthly content plan','Campaign ideas & messages','Reviewing designs & captions']}},
+  {icon:icons.megaphone,
+   ar:{t:'إدارة الإعلانات',d:'بخطط وبدير حملات Meta على فيسبوك وإنستجرام بشكل أساسي، وعندي تجربة على Google وTikTok وSnapchat.',i:['هيكلة الحملات والاستهداف','توزيع الميزانية','تجربة أكتر من إعلان','تحسين مستمر']},
+   en:{t:'Media buying',d:'I plan and run Meta campaigns on Facebook and Instagram first, and I have hands-on experience with Google, TikTok and Snapchat.',i:['Campaign structure & targeting','Budget allocation','Testing several ads','Ongoing optimisation']}},
+  {icon:icons.funnel,
+   ar:{t:'جذب العملاء والحجوزات',d:'الهدف مش رسايل كتير وخلاص. بنبني طريق واضح من أول ما العميل يشوف الإعلان لحد ما يكلمك على الواتساب أو يحجز.',i:['تخطيط رحلة العميل','Lead Ads والواتساب','مراجعة صفحات الهبوط','متابعة جودة الاستفسارات']},
+   en:{t:'Leads & bookings',d:'The goal isn’t just more messages. We build a clear path from the moment someone sees the ad to the moment they message you on WhatsApp or book.',i:['Customer journey planning','Lead Ads & WhatsApp','Landing page review','Lead quality follow-up']}},
+  {icon:icons.chart,
+   ar:{t:'متابعة الأداء والتطوير',d:'بنراجع الأرقام بانتظام: إيه اللي شغال، وإيه اللي محتاج يتغير، وبناخد القرار على الأساس ده.',i:['متابعة المؤشرات','تقارير الحملات','تكلفة العميل','قرارات مبنية على الأرقام']},
+   en:{t:'Tracking & improvement',d:'We review the numbers regularly: what’s working, what needs to change, and we decide based on that.',i:['KPI tracking','Campaign reports','Cost per customer','Data-led decisions']}},
+  {icon:icons.spark,
+   ar:{t:'شغل أسرع بالذكاء الاصطناعي',d:'بستخدم أدوات زي ChatGPT وClaude في البحث والتخطيط والتقارير، عشان الوقت يروح في التفكير مش في الشغل المتكرر.',i:['البحث والتحليل','تخطيط المحتوى','التقارير','تنظيم الشغل']},
+   en:{t:'Faster work with AI',d:'I use tools like ChatGPT and Claude for research, planning and reporting, so time goes into thinking rather than repetitive work.',i:['Research & analysis','Content planning','Reporting','Keeping work organised']}},
+];
+
+const arPath=basePath('/ar/'); const enPath=basePath('/en/');
+---
+<BaseLayout lang={L} title={en?'Ahmed Rashwan | Marketing Strategist & Performance Marketer':'أحمد رشوان | استراتيجي تسويق ومسوق أداء'} description={copy.intro} canonical={Astro.site?new URL(basePath(root),Astro.site).href:undefined} alternateAr={Astro.site?new URL(arPath,Astro.site).href:undefined} alternateEn={Astro.site?new URL(enPath,Astro.site).href:undefined}>
+<main class="page-main">
+<div id="top"></div>
+<section class="hero-shell">
+  <SiteHeader lang={L} path={root}/>
+  <div class="hero-glow" aria-hidden="true"></div>
+  <section class="hero wrap">
+    <div class="hero-copy">
+      <p class="status-pill" data-hero-in><i aria-hidden="true"></i>{copy.role}</p>
+      <p class="hero-name" data-hero-in>{en?'Ahmed Rashwan':'أحمد رشوان'}</p>
+      <h1 data-hero-in data-split>{copy.heroA}<span class="grad-text">{copy.heroB}</span>{copy.heroC}</h1>
+      <p class="hero-lead" data-hero-in>{copy.intro}</p>
+      <div class="hero-actions" data-hero-in>
+        <a class="button button-cyan" href={basePath(root+'#work')}>{en?'Explore my work':'شوف شغلي'} <span aria-hidden="true">{en?'↘':'↙'}</span></a>
+        <a class="button button-ghost" href={basePath(root+'#contact')}>{en?'Let’s talk':'خلينا نتكلم'} <span aria-hidden="true">↗</span></a>
+      </div>
+      <div class="hero-meta" data-hero-in><span>{en?'Egypt':'مصر'}</span><i></i><span>{copy.meta}</span></div>
+    </div>
+    <div class="portrait-wrap" data-hero-in>
+      <div class="portrait-ring" aria-hidden="true"></div>
+      <div class="portrait-frame" data-portrait><Picture src={portrait} alt={en?'Portrait of Ahmed Rashwan':'صورة أحمد رشوان'} widths={[320,640]} sizes="(max-width: 720px) 60vw, 360px" formats={['avif','webp']} loading="eager" fetchpriority="high"/></div>
+      <div class="float-chip chip-top"><b>01</b>{en?'Strategy first':'الاستراتيجية أولًا'}</div>
+      <div class="float-chip chip-side"><span>Meta Ads</span><span>{en?'Content':'محتوى'}</span><span>{en?'Growth':'نمو'}</span></div>
+      <div class="float-card"><span class="float-dot" aria-hidden="true"></span>{en?'Research → Plan → Execute → Optimise':'بحث ← تخطيط ← تنفيذ ← تحسين'}</div>
+    </div>
+  </section>
+  <div class="tools-strip">
+    <div class="wrap tools-inner">
+      <p class="tools-label">{copy.tools}</p>
+      <div class="tools-marquee"><ul class="tools-list">{tools.map(t=><li style={`--brand:${t.color}`}><svg viewBox="0 0 24 24" fill="currentColor" fill-rule={t.evenodd?"evenodd":undefined} aria-hidden="true" set:html={t.svg}/><span>{t.name}</span></li>)}</ul><ul class="tools-list" aria-hidden="true">{tools.map(t=><li style={`--brand:${t.color}`}><svg viewBox="0 0 24 24" fill="currentColor" fill-rule={t.evenodd?"evenodd":undefined} aria-hidden="true" set:html={t.svg}/><span>{t.name}</span></li>)}</ul></div>
+    </div>
+  </div>
+</section>
+
+<section class="section expertise-section" id="services"><div class="wrap">
+  <div class="section-heading" data-reveal><div><p class="eyebrow">01 — {en?'Services':'خدماتي'}</p><h2>{copy.services}</h2></div><p>{copy.servicesLead}</p></div>
+  <div class="expertise-grid">{services.map((item,index)=><article class="expertise-card"><span class="icon-box"><svg viewBox="0 0 24 24" aria-hidden="true" set:html={item.icon}/></span><h3>{item[L].t}</h3><p>{item[L].d}</p><ul class="service-includes">{item[L].i.map(x=><li>{x}</li>)}</ul><span class="card-index">0{index+1}</span></article>)}</div>
+</div></section>
+
+<section class="section work-section" id="work"><div class="wrap">
+  <div class="section-heading" data-reveal><div><p class="eyebrow">02 — {en?'Work':'أعمالي'}</p><h2>{copy.work}</h2></div><p>{copy.workLead}</p></div>
+  <div class="project-grid">{projects.map((project,index)=><a class="project-card" href={basePath(`/${L}/projects/${project.slug}/`)} data-reveal>
+    <div class="project-image"><Picture src={project.cover} alt="" widths={[400,800]} sizes="(max-width: 700px) 100vw, (max-width: 1050px) 50vw, 33vw" formats={['avif','webp']} loading="lazy" decoding="async"/><span class="project-index">0{index+1}</span></div>
+    <div class="project-card-body"><p class="project-sector">{project.sector[L]}</p><h3>{project.name[L]}</h3><p class="project-summary">{project.summary[L]}</p>
+      <div class="project-foot"><div class="chip-row">{project.tags[L].map(tag=><span>{tag}</span>)}</div><span class="project-arrow" aria-hidden="true">↗</span></div>
+    </div></a>)}</div>
+</div></section>
+
+<section class="section approach-section" id="approach"><div class="wrap">
+  <div class="section-heading" data-reveal><div><p class="eyebrow">03 — {en?'Approach':'طريقة شغلي'}</p><h2>{copy.approach}</h2></div><span class="approach-path">{copy.path.map((p,i)=><>{i>0&&<i>→</i>}{p}</>)}</span></div>
+  <div class="steps-grid">{copy.steps.map((step,index)=><article class="step" data-reveal><span class="step-count">0{index+1}</span><span class="step-line" aria-hidden="true"></span><h3>{step}</h3><p>{copy.stepBodies[index]}</p></article>)}</div>
+</div></section>
+
+<section class="section contact-section" id="contact"><div class="wrap contact-panel" data-reveal>
+  <div class="contact-copy"><p class="eyebrow">04 — {en?'Contact':'تواصل'}</p><h2>{copy.contact}</h2><p>{copy.contactBody}</p></div>
+  <div class="contact-links">
+    <a class="email-link" href="mailto:a.essam.rashwan@gmail.com"><span class="icon-box small" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg></span>a.essam.rashwan@gmail.com</a>
+    <div class="contact-actions"><a class="button button-dark" href="mailto:a.essam.rashwan@gmail.com">{copy.send} <span aria-hidden="true">↗</span></a><button class="copy-button" data-copy-email="a.essam.rashwan@gmail.com" data-copied={copy.copied} data-copy-hint={copy.copyHint}>{copy.copy}</button><span class="copy-feedback" aria-live="polite"></span></div>
+    <div class="social-links"><a href="https://www.linkedin.com/in/ahmed-essam-rashwan/" target="_blank" rel="noreferrer">LinkedIn ↗</a><a href="https://www.facebook.com/a.rashwan90" target="_blank" rel="noreferrer">Facebook ↗</a><a href="https://www.instagram.com/a.rashwan90/" target="_blank" rel="noreferrer">Instagram ↗</a></div>
+  </div>
+</div></section>
+</main><SiteFooter lang={L}/>
+</BaseLayout>

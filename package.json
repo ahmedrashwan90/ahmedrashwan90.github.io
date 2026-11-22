@@ -1,0 +1,16 @@
+{
+  "name": "ahmed-rashwan-portfolio",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "predev": "node scripts-gallery.cjs",
+    "dev": "astro dev --host 0.0.0.0",
+    "prebuild": "node scripts-gallery.cjs",
+    "build": "astro check && astro build",
+    "preview": "astro preview --host 0.0.0.0",
+    "typecheck": "astro check"
+  },
+  "dependencies": { "astro": "^7.4.13", "gsap": "^3.13.0" },
+  "devDependencies": { "@astrojs/check": "^0.9.4", "typescript": "^5.9.0" }
+}

@@ -1,0 +1,11 @@
+---
+import {basePath} from '../data/projects';
+const lang=Astro.props.lang??'ar';
+const page=Astro.props.path??(lang==='ar'?'/ar/':'/en/');
+const home=lang==='ar'?'/ar/':'/en/';
+const pageRoot=page.includes('/projects/')?page.split('/projects/')[0]+'/':page;
+const nav=lang==='ar'?[{label:'خدماتي',href:`${basePath(pageRoot)}#services`},{label:'أعمالي',href:`${basePath(home)}#work`},{label:'طريقة شغلي',href:`${basePath(pageRoot)}#approach`}]:[{label:'Services',href:`${basePath(pageRoot)}#services`},{label:'Work',href:`${basePath(home)}#work`},{label:'Approach',href:`${basePath(pageRoot)}#approach`}];
+const peer=page.startsWith('/ar')?page.replace('/ar','/en'):page.replace('/en','/ar');
+---
+<header class="site-header"><div class="header-inner wrap"><a class="wordmark" href={basePath(home)} aria-label={lang==='ar'?'أحمد رشوان - الرئيسية':'Ahmed Rashwan - home'}><span class="wordmark-name">Ahmed Rashwan</span><span class="wordmark-tag">Marketing · AI · Growth</span></a><button class="menu-toggle" aria-expanded="false" aria-controls="primary-nav"><span class="menu-icon" aria-hidden="true">☰</span><span class="sr-only">{lang==='ar'?'افتح القائمة':'Open menu'}</span></button><nav class="primary-nav" id="primary-nav" aria-label={lang==='ar'?'التنقل الرئيسي':'Main navigation'}>{nav.map(item=><a href={item.href}>{item.label}</a>)}<a class="lang-link" href={basePath(peer)} lang={lang==='ar'?'en':'ar'}>{lang==='ar'?'EN':'عربي'}</a><a class="button button-small button-blue nav-cta" href={`${basePath(home)}#contact`}>{lang==='ar'?'خلينا نتكلم':'Let’s talk'}</a></nav></div></header>
+<noscript><style>@media(max-width:819px){.menu-toggle{display:none!important}.primary-nav{position:static!important;display:flex!important;flex-direction:column!important;align-items:stretch!important;width:100%;padding:8px 0!important;border:0!important;background:transparent!important;box-shadow:none!important}.primary-nav>a:not(.button){color:inherit!important}}</style></noscript>

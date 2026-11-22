@@ -1,0 +1,29 @@
+---
+// Project story: context, my role, deliverables, and what I worked on.
+import { details } from '../data/details';
+const { project, lang } = Astro.props;
+const en = lang === 'en';
+const L = en ? 'en' : 'ar';
+const d = details[project.slug];
+const t = en
+  ? { about: 'The project', role: 'My role', out: 'Key outputs', work: 'What I worked on', workEyebrow: 'The work', workLead: 'From research to launch, this is what my part covered.', store: 'Visit the store', page: 'Brand page' }
+  : { about: 'عن المشروع', role: 'دوري', out: 'أهم المخرجات', work: 'اشتغلت على إيه', workEyebrow: 'تفاصيل الشغل', workLead: 'من البحث لحد التنفيذ، ده اللي كان عليّا في المشروع.', store: 'زور المتجر', page: 'صفحة البراند' };
+---
+<section class="section detail-content"><div class="wrap">
+  <div class="detail-main-grid">
+    <div class="detail-narrative">
+      <p class="eyebrow">{t.about}{d?.period && <span class="period"> · {d.period[L]}</span>}</p>
+      <p class="detail-context">{d?.context[L] ?? project.intro[L]}</p>
+      <div class="project-note"><strong>{t.role}</strong><span>{project.role[L]}</span></div>
+      {project.external && <a class="external-project" href={project.external} target="_blank" rel="noreferrer">{project.id === 'heba-sager-beauty' ? t.store : t.page} ↗</a>}
+    </div>
+    {d && <aside class="detail-aside">
+      <p class="eyebrow">{t.out}</p>
+      <ul class="deliverables">{d.deliverables[L].map(item => <li>{item}</li>)}</ul>
+    </aside>}
+  </div>
+  {d && <div class="work-block">
+    <div class="section-heading"><div><p class="eyebrow">{t.workEyebrow}</p><h2>{t.work}</h2></div><p>{t.workLead}</p></div>
+    <ol class="work-grid">{d.work.map((w, i) => <li class="work-card"><span class="work-num">{String(i + 1).padStart(2, '0')}</span><h3>{w.title[L]}</h3><p>{w.body[L]}</p></li>)}</ol>
+  </div>}
+</div></section>

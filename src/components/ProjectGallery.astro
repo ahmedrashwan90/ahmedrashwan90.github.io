@@ -1,0 +1,57 @@
+---
+// Project samples: captioned posts as image + caption rows (carousels show all their slides),
+// and any remaining uncaptioned designs as a grid.
+import { Picture, getImage } from 'astro:assets';
+import { sampleCaption } from '../data/projects';
+import { details } from '../data/details';
+const { project, lang } = Astro.props;
+const en = lang === 'en';
+const all = [{ file: project.coverFile, image: project.cover }, ...project.gallery];
+const withData = await Promise.all(all.map(async (item: { file: string; image: any }) => ({
+  ...item,
+  full: (await getImage({ src: item.image, format: 'webp', width: 1920, quality: 84 })).src,
+  caption: sampleCaption(project.slug, item.file),
+})));
+const byFile = new Map(withData.map(i => [i.file, i]));
+const posts = withData.filter(i => i.caption).map(i => ({ ...i, media: [i, ...(i.caption!.slides ?? []).map(f => byFile.get(f)).filter(Boolean)] as typeof withData }));
+const slideFiles = new Set(posts.flatMap(p => p.caption!.slides ?? []));
+const designs = details[project.slug]?.hideExtras ? [] : withData.filter(i => !i.caption && !slideFiles.has(i.file));
+const alt = en ? `Creative from ${project.name.en}` : `تصميم من ${project.name.ar}`;
+const t = en
+  ? { postsEyebrow: 'From the page', postsTitle: 'Published designs and their captions', postsLead: 'Each design next to the exact caption it went out with.', caption: 'Caption', carousel: 'Carousel', prev: 'Previous slide', next: 'Next slide', designsEyebrow: 'More work', designsTitle: posts.length ? 'Additional designs' : 'Selected designs', view: 'View full size' }
+  : { postsEyebrow: 'من الصفحة', postsTitle: 'تصميمات نزلت على الصفحة', postsLead: 'كل تصميم وجنبه الكابشن اللي نزل بيه بالظبط.', caption: 'الكابشن', carousel: 'كاروسيل', prev: 'الشريحة اللي قبلها', next: 'الشريحة اللي بعدها', designsEyebrow: 'شغل إضافي', designsTitle: posts.length ? 'تصميمات إضافية' : 'تصميمات مختارة', view: 'عرض بالحجم الكامل' };
+---
+{posts.length > 0 && <section class="section posts-section"><div class="wrap">
+  <div class="section-heading" data-reveal><div><p class="eyebrow">{t.postsEyebrow}</p><h2>{t.postsTitle}</h2></div><p>{t.postsLead}</p></div>
+  <div class="post-list">{posts.map((item, index) => <article class="post-row">
+    {item.media.length === 1
+      ? <button class="gallery-trigger post-media" type="button" data-gallery-item data-full={item.full} data-alt={alt} data-caption={item.caption!.text} data-source="" aria-label={`${t.view} ${index + 1}`}>
+          <Picture src={item.image} alt={alt} widths={[480, 960]} sizes="(max-width: 820px) 100vw, 50vw" formats={['avif', 'webp']} loading="lazy" decoding="async"/>
+          <span class="zoom-hint" aria-hidden="true">↗</span>
+        </button>
+      : <div class="post-media post-carousel" data-carousel>
+          <div class="carousel-track" dir="ltr">{item.media.map((m, s) =>
+            <button class="gallery-trigger carousel-slide" type="button" data-gallery-item data-full={m.full} data-alt={alt} data-caption={item.caption!.text} data-source="" aria-label={`${t.view} ${s + 1} / ${item.media.length}`}>
+              <Picture src={m.image} alt={`${alt} (${s + 1}/${item.media.length})`} widths={[480, 960]} sizes="(max-width: 820px) 100vw, 50vw" formats={['avif', 'webp']} loading="lazy" decoding="async"/>
+            </button>)}
+          </div>
+          <button class="carousel-nav carousel-prev" type="button" data-carousel-prev aria-label={t.prev}>‹</button>
+          <button class="carousel-nav carousel-next" type="button" data-carousel-next aria-label={t.next}>›</button>
+          <div class="carousel-dots" dir="ltr" aria-hidden="true">{item.media.map((_, s) => <span class:list={[{ 'is-active': s === 0 }]}></span>)}</div>
+          <span class="carousel-count" dir="ltr"><span data-carousel-current>1</span> / {item.media.length}</span>
+        </div>}
+    <div class="post-copy">
+      <div class="post-meta"><span class="post-index">{String(index + 1).padStart(2, '0')}</span><span class="post-label">{t.caption}</span>{item.media.length > 1 && <span class="post-badge">{t.carousel} · {item.media.length}</span>}</div>
+      <div class="post-caption" lang="ar" dir="rtl" tabindex="0">{item.caption!.text}</div>
+    </div>
+  </article>)}</div>
+</div></section>}
+{designs.length > 0 && <section class="section designs-section"><div class="wrap">
+  <div class="section-heading" data-reveal><div><p class="eyebrow">{t.designsEyebrow}</p><h2>{t.designsTitle}</h2></div></div>
+  <div class="gallery-grid">{designs.map((item, index) => <figure class="gallery-figure">
+    <button class="gallery-trigger" type="button" data-gallery-item data-full={item.full} data-alt={alt} data-caption="" data-source="" aria-label={`${t.view} ${index + 1}`}>
+      <Picture src={item.image} alt={alt} widths={[400, 900]} sizes="(max-width: 640px) 100vw, (max-width: 1000px) 50vw, 33vw" formats={['avif', 'webp']} loading="lazy" decoding="async"/>
+      <span class="zoom-hint" aria-hidden="true">↗</span>
+    </button>
+  </figure>)}</div>
+</div></section>}

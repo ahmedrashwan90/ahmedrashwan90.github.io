@@ -1,0 +1,31 @@
+---
+import { basePath, projects } from '../../../data/projects';
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import SiteHeader from '../../../components/SiteHeader.astro';
+import SiteFooter from '../../../components/SiteFooter.astro';
+import HebaTracks from '../../../components/HebaTracks.astro';
+import ProjectGallery from "../../../components/ProjectGallery.astro";
+import ProjectDetails from "../../../components/ProjectDetails.astro";
+import { Picture } from 'astro:assets';
+export function getStaticPaths(){return projects.map(project=>({params:{slug:project.slug},props:{project}}))}
+const {project}=Astro.props;
+const title=`${project.name.ar} — أحمد رشوان | استراتيجي تسويق ومسوق أداء`;
+const description=project.summary.ar;
+const root=`/ar/projects/${project.slug}/`;
+const canonical=Astro.site?new URL(basePath(root),Astro.site).href:undefined;
+const alternateAr=canonical,alternateEn=Astro.site?new URL(basePath(`/en/projects/${project.slug}/`),Astro.site).href:undefined;
+const next=projects[(projects.findIndex(p=>p.slug===project.slug)+1)%projects.length];
+---
+<BaseLayout lang="ar" title={title} description={description} canonical={canonical} alternateAr={alternateAr} alternateEn={alternateEn} image={project.cover}>
+<main class="page-main"><div id="top"></div><section class="detail-top"><SiteHeader lang="ar" path={root}/><div class="wrap detail-hero"><div class="detail-heading"><a class="back-link" href={basePath('/ar/#work')}>→ كل الشغل</a><p class="eyebrow eyebrow-blue">{project.sector.ar}</p><h1>{project.name.ar}</h1><p class="detail-intro">{project.intro.ar}</p><div class="chip-row">{project.tags.ar.map(tag=><span>{tag}</span>)}</div></div><figure class="detail-cover"><Picture src={project.cover} alt={`تصميم مختار من مشروع ${project.name.ar}`} widths={[480,1000]} sizes="(max-width: 800px) 100vw, 50vw" formats={['avif','webp']} loading="eager" fetchpriority="high"/></figure></div></section>
+<ProjectDetails project={project} lang="ar"/>
+<ProjectGallery project={project} lang="ar"/>
+{project.id==='heba-sager-beauty'&&<HebaTracks lang="ar" store={project.external}/>}
+<section class="next-project-section"><div class="wrap next-project-inner"><div><p class="eyebrow">المشروع التالي</p><h2>{next.name.ar}</h2></div><a class="button button-cyan" href={basePath(`/ar/projects/${next.slug}/`)}>افتح المشروع ↗</a><a class="button button-outline-light" href={basePath('/ar/#contact')}>خلينا نتكلم</a></div></section></main>
+<dialog id="lightbox" class="lightbox" tabindex="-1" aria-label="معرض الصور بالحجم الكامل"><button class="lightbox-close" data-close aria-label="إغلاق الصورة">×</button><button class="lightbox-nav lightbox-prev" data-prev aria-label="الصورة السابقة">‹</button><div class="lightbox-stage"><img class="lightbox-image" src="" alt=""/><div class="lightbox-caption-wrap"><p class="lightbox-caption" lang="ar" dir="rtl"></p><a class="lightbox-source" target="_blank" rel="noreferrer"></a></div></div><button class="lightbox-nav lightbox-next" data-next aria-label="الصورة التالية">›</button></dialog><SiteFooter lang="ar"/>
+</BaseLayout>
+
+
+
+
+

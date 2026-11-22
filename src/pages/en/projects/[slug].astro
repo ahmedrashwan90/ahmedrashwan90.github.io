@@ -1,0 +1,33 @@
+---
+import { basePath, projects } from '../../../data/projects';
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import SiteHeader from '../../../components/SiteHeader.astro';
+import SiteFooter from '../../../components/SiteFooter.astro';
+import HebaTracks from '../../../components/HebaTracks.astro';
+import ProjectGallery from "../../../components/ProjectGallery.astro";
+import ProjectDetails from "../../../components/ProjectDetails.astro";
+import { Picture } from 'astro:assets';
+export function getStaticPaths(){return projects.map(project=>({params:{slug:project.slug},props:{project}}))}
+const {project}=Astro.props;
+const title=`${project.name.en} — Ahmed Rashwan | Marketing Strategist & Performance Marketer`;
+const description=project.summary.en;
+const root=`/en/projects/${project.slug}/`;
+const canonical=Astro.site?new URL(basePath(root),Astro.site).href:undefined;
+const alternateAr=Astro.site?new URL(basePath(`/ar/projects/${project.slug}/`),Astro.site).href:undefined,alternateEn=canonical;
+const next=projects[(projects.findIndex(p=>p.slug===project.slug)+1)%projects.length];
+---
+<BaseLayout lang="en" title={title} description={description} canonical={canonical} alternateAr={alternateAr} alternateEn={alternateEn} image={project.cover}>
+<main class="page-main"><div id="top"></div><section class="detail-top"><SiteHeader lang="en" path={root}/><div class="wrap detail-hero"><div class="detail-heading"><a class="back-link" href={basePath('/en/#work')}>← All work</a><p class="eyebrow eyebrow-blue">{project.sector.en}</p><h1>{project.name.en}</h1><p class="detail-intro">{project.intro.en}</p><div class="chip-row">{project.tags.en.map(tag=><span>{tag}</span>)}</div></div><figure class="detail-cover"><Picture src={project.cover} alt={`Selected creative from ${project.name.en}`} widths={[480,1000]} sizes="(max-width: 800px) 100vw, 50vw" formats={['avif','webp']} loading="eager" fetchpriority="high"/></figure></div></section>
+<ProjectDetails project={project} lang="en"/>
+<ProjectGallery project={project} lang="en"/>
+{project.id==='heba-sager-beauty'&&<HebaTracks lang="en" store={project.external}/>}
+<section class="next-project-section"><div class="wrap next-project-inner"><div><p class="eyebrow">Next project</p><h2>{next.name.en}</h2></div><a class="button button-cyan" href={basePath(`/en/projects/${next.slug}/`)}>Open project ↗</a><a class="button button-outline-light" href={basePath('/en/#contact')}>Let’s talk</a></div></section></main>
+<dialog id="lightbox" class="lightbox" tabindex="-1" aria-label="Full-size image gallery"><button class="lightbox-close" data-close aria-label="Close image">×</button><button class="lightbox-nav lightbox-prev" data-prev aria-label="Previous image">‹</button><div class="lightbox-stage"><img class="lightbox-image" src="" alt=""/><div class="lightbox-caption-wrap"><p class="lightbox-caption" lang="ar" dir="rtl"></p><a class="lightbox-source" target="_blank" rel="noreferrer"></a></div></div><button class="lightbox-nav lightbox-next" data-next aria-label="Next image">›</button></dialog><SiteFooter lang="en"/>
+</BaseLayout>
+
+
+
+
+
+
+

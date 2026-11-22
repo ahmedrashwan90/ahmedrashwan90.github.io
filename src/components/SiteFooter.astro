@@ -1,0 +1,5 @@
+---
+const lang=Astro.props.lang??'ar';
+import {basePath} from '../data/projects';
+---
+<footer class="site-footer"><div class="wrap footer-inner"><a class="wordmark footer-mark" href={basePath(lang==='ar'?'/ar/':'/en/')}><span class="wordmark-name">Ahmed Rashwan</span><span class="wordmark-tag">Marketing · AI · Growth</span></a><p>{lang==='ar'?'الاستراتيجية الأول، وبعدين التنفيذ.':'Strategy first, then execution.'}</p><a href={`${basePath(lang==='ar'?'/ar/':'/en/')}#top`}>{lang==='ar'?'ارجع لفوق ↑':'Back to top ↑'}</a><small>© {new Date().getFullYear()} Ahmed Rashwan</small></div></footer>
