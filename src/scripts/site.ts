@@ -207,13 +207,6 @@ dialog?.addEventListener('click', event => { if (event.target === dialog) dialog
 dialog?.addEventListener('close', () => lastTrigger?.focus());
 dialog?.addEventListener('keydown', event => { if (event.key === 'ArrowRight') show(index + 1); if (event.key === 'ArrowLeft') show(index - 1); });
 
-/* ---------- Copy email ---------- */
-$$<HTMLButtonElement>('[data-copy-email]').forEach(button => button.addEventListener('click', async () => {
-  const email = button.dataset.copyEmail ?? '';
-  const feedback = button.nextElementSibling;
-  try { await navigator.clipboard.writeText(email); if (feedback) feedback.textContent = button.dataset.copied ?? 'Copied'; }
-  catch { if (feedback) feedback.textContent = button.dataset.copyHint ?? 'Copy the email manually.'; }
-}));
 
 /* ---------- Carousel posts ---------- */
 $$('[data-carousel]').forEach(carousel => {

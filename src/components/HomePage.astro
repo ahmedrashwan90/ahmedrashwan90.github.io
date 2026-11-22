@@ -6,6 +6,7 @@ import { basePath, projects } from '../data/projects';
 import { Picture } from 'astro:assets';
 import portrait from '../assets/ahmed-rashwan.jpeg';
 import { tools } from '../data/tools';
+import { socials } from '../data/socials';
 const lang = Astro.props.lang ?? 'ar';
 const en = lang === 'en';
 const L = en ? 'en' : 'ar';
@@ -16,14 +17,14 @@ const copy = en ? {
   services:'What I can help you with', servicesLead:'I handle strategy, planning, ads and creative direction. A small team works with me on design and content production.',
   work:'Selected work', workLead:'Real projects across different industries. Open any of them to see the details, designs and captions.',
   approach:'How we work together', path:['Understand','Plan','Execute','Improve'], steps:['Understand your business','Build the plan','Execute','Review and improve'], stepBodies:['We talk about your goal, your customer, your product and where things stand today.','A practical plan: what we’ll do, for whom, and in what order.','Content, designs and campaigns, done with the team.','We look at the results and adjust whatever needs adjusting.'],
-  contact:'Have a project? Let’s talk', contactBody:'Send me a short note about your business and what you want to achieve, and I’ll get back to you soon.', send:'Send an email', copy:'Copy email', copied:'Email copied', copyHint:'Copy it manually: a.essam.rashwan@gmail.com',
+  contact:'Have a project? Let’s talk', contactBody:'Send me a short note about your business and what you want to achieve, and I’ll get back to you soon.',
 } : {
   role:'استراتيجي تسويق ومسوق أداء', metaDesc:'أحمد رشوان، استراتيجي تسويق ومسوق أداء في مصر. خطط تسويق ومحتوى وإعلانات Meta للمشاريع في مصر والدول العربية.', heroA:'تسويق مبني على ', heroB:'فهم مشروعك', heroC:'، مش على التخمين.', intro:'بشتغل مع أصحاب المشاريع من أول ما نفهم السوق والعميل، لحد الخطة والمحتوى والإعلانات. وبعدها بنراجع النتايج ونطوّر.',
   meta:'بشتغل مع مشاريع في مصر والدول العربية', tools:'أدوات بشتغل بيها كل يوم',
   services:'أقدر أساعدك في إيه', servicesLead:'أنا مسؤول عن الاستراتيجية والتخطيط والإعلانات والتوجيه الإبداعي، ومعايا فريق صغير بيتولى التصميم وكتابة المحتوى.',
   work:'شغل اشتغلت عليه', workLead:'مشاريع حقيقية في مجالات مختلفة. افتح أي مشروع وشوف التفاصيل والتصميمات والكابشنات.',
   approach:'إزاي بنشتغل مع بعض', path:['نفهم','نخطط','ننفذ','نطوّر'], steps:['نفهم مشروعك','نحط الخطة','ننفذ','نراجع ونطوّر'], stepBodies:['بنتكلم عن هدفك، وعميلك، ومنتجك، والوضع الحالي.','خطة عملية: هنعمل إيه، لمين، وبأي ترتيب.','المحتوى والتصميمات والحملات، مع الفريق.','بنشوف النتايج ونعدّل اللي محتاج يتعدّل.'],
-  contact:'عندك مشروع؟ خلينا نتكلم', contactBody:'ابعتلي نبذة عن مشروعك والهدف اللي عايز توصله، وهرد عليك في أقرب وقت.', send:'ابعتلي إيميل', copy:'انسخ الإيميل', copied:'اتنسخ الإيميل', copyHint:'انسخه يدويًا: a.essam.rashwan@gmail.com',
+  contact:'عندك مشروع؟ خلينا نتكلم', contactBody:'ابعتلي نبذة عن مشروعك والهدف اللي عايز توصله، وهرد عليك في أقرب وقت.',
 };
 // Simple stroke icons (24×24), drawn inline so they follow currentColor.
 const icons = {
@@ -111,12 +112,16 @@ const arPath=basePath('/ar/'); const enPath=basePath('/en/');
 </div></section>
 
 <section class="section contact-section" id="contact"><div class="wrap contact-panel" data-reveal>
-  <div class="contact-copy"><p class="eyebrow">04 — {en?'Contact':'تواصل'}</p><h2>{copy.contact}</h2><p>{copy.contactBody}</p></div>
-  <div class="contact-links">
-    <a class="email-link" href="mailto:a.essam.rashwan@gmail.com"><span class="icon-box small" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg></span>a.essam.rashwan@gmail.com</a>
-    <div class="contact-actions"><a class="button button-dark" href="mailto:a.essam.rashwan@gmail.com">{copy.send} <span aria-hidden="true">↗</span></a><button class="copy-button" data-copy-email="a.essam.rashwan@gmail.com" data-copied={copy.copied} data-copy-hint={copy.copyHint}>{copy.copy}</button><span class="copy-feedback" aria-live="polite"></span></div>
-    <div class="social-links"><a href="https://www.linkedin.com/in/ahmed-essam-rashwan/" target="_blank" rel="noreferrer">LinkedIn ↗</a><a href="https://www.facebook.com/a.rashwan90" target="_blank" rel="noreferrer">Facebook ↗</a><a href="https://www.instagram.com/a.rashwan90/" target="_blank" rel="noreferrer">Instagram ↗</a></div>
+  <div class="contact-copy">
+    <p class="eyebrow">04 — {en?'Contact':'تواصل'}</p><h2>{copy.contact}</h2><p>{copy.contactBody}</p>
   </div>
+  <ul class="contact-cards">{socials.map(s => <li>
+    <a class="contact-card" href={s.href} style={`--brand:${s.color}`} {...(s.id==='email'?{}:{target:'_blank',rel:'noopener noreferrer'})} aria-label={`${s.name[L]}: ${s.handle}`}>
+      <span class="contact-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d={s.path}/></svg></span>
+      <span class="contact-text"><span class="contact-platform">{s.name[L]}</span><span class="contact-handle" dir="ltr">{s.handle}</span></span>
+      <span class="contact-go" aria-hidden="true">↗</span>
+    </a>
+  </li>)}</ul>
 </div></section>
 </main><SiteFooter lang={L}/>
 </BaseLayout>

@@ -471,3 +471,26 @@ html[dir=rtl] .scroll-progress{transform-origin:right center}
 .carousel-dots span.is-active{width:22px;background:var(--cyan)}
 .carousel-count{position:absolute;top:12px;right:12px;z-index:2;padding:4px 10px;border-radius:99px;background:#0c1220cc;border:1px solid var(--line-strong);font:600 12px var(--sans);color:#fff}
 .post-badge{margin-inline-start:auto;padding:3px 10px;border-radius:99px;border:1px solid #35bfef55;color:var(--cyan);font:600 12px var(--sans),var(--arabic)}
+
+/* ---------- Contact cards ---------- */
+.contact-cta{margin-top:24px}
+.contact-cards{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:1fr;gap:12px;position:relative;z-index:1}
+.contact-card{display:flex;align-items:center;gap:14px;padding:14px 16px;border-radius:18px;background:#0a1430b3;border:1px solid #ffffff2e;backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);color:#fff;transition:transform .25s ease,background .25s ease,border-color .25s ease,box-shadow .25s ease}
+.contact-card:hover{transform:translateY(-3px);background:#0a1430e6;border-color:color-mix(in srgb,var(--brand) 70%,#fff 10%);box-shadow:0 14px 34px #0006}
+.contact-icon{flex:none;display:grid;place-items:center;width:48px;height:48px;border-radius:14px;background:#fff;color:var(--brand);transition:background .25s ease,color .25s ease}
+.contact-icon svg{width:24px;height:24px}
+.contact-card:hover .contact-icon{background:var(--brand);color:#fff}
+.contact-text{display:flex;flex-direction:column;min-width:0;flex:1;line-height:1.35}
+.contact-platform{font:600 13px var(--sans),var(--arabic);color:#cfe0ff}
+.contact-handle{font:600 16px var(--sans);color:#fff;overflow-wrap:anywhere;text-align:start}
+html[dir=rtl] .contact-handle{text-align:right}
+.contact-go{flex:none;display:grid;place-items:center;width:34px;height:34px;border-radius:50%;border:1px solid #ffffff40;font-size:15px;transition:background .25s ease,border-color .25s ease}
+html[dir=rtl] .contact-go{transform:scaleX(-1)}
+.contact-card:hover .contact-go{background:#fff;color:#0a1430;border-color:#fff}
+.contact-handle{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;overflow-wrap:normal}
+.contact-copy{display:flex;flex-direction:column;align-items:flex-start}
+@media(min-width:820px){.contact-panel{grid-template-columns:.9fr 1.1fr}}
+.contact-cards{grid-template-columns:minmax(0,1fr)}
+.contact-cards li,.contact-card{min-width:0}
+@media(max-width:420px){.contact-card{padding:12px;gap:11px}.contact-icon{width:42px;height:42px;border-radius:12px}.contact-icon svg{width:21px;height:21px}.contact-handle{font-size:14.5px}.contact-go{width:30px;height:30px}}
+@media(max-width:420px){.contact-go{display:none}.contact-handle{font-size:14px}}
