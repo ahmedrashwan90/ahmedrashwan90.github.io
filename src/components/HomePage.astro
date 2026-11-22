@@ -11,14 +11,14 @@ const en = lang === 'en';
 const L = en ? 'en' : 'ar';
 const root = en ? '/en/' : '/ar/';
 const copy = en ? {
-  role:'Marketing Strategist & Performance Marketer', heroA:'Marketing built on ', heroB:'understanding your business', heroC:', not guesswork.', intro:'I work with business owners on every step: understanding the market and the customer, building the plan, then content and ads. After that, we look at the results and improve.',
+  role:'Marketing Strategist & Performance Marketer', metaDesc:'Ahmed Rashwan, marketing strategist and performance marketer in Egypt. Marketing plans, content and Meta ads for businesses in Egypt and the Arab world.', heroA:'Marketing built on ', heroB:'understanding your business', heroC:', not guesswork.', intro:'I work with business owners on every step: understanding the market and the customer, building the plan, then content and ads. After that, we look at the results and improve.',
   meta:'Working with businesses in Egypt and the Arab world', tools:'Tools I work with every day',
   services:'What I can help you with', servicesLead:'I handle strategy, planning, ads and creative direction. A small team works with me on design and content production.',
   work:'Selected work', workLead:'Real projects across different industries. Open any of them to see the details, designs and captions.',
   approach:'How we work together', path:['Understand','Plan','Execute','Improve'], steps:['Understand your business','Build the plan','Execute','Review and improve'], stepBodies:['We talk about your goal, your customer, your product and where things stand today.','A practical plan: what we’ll do, for whom, and in what order.','Content, designs and campaigns, done with the team.','We look at the results and adjust whatever needs adjusting.'],
   contact:'Have a project? Let’s talk', contactBody:'Send me a short note about your business and what you want to achieve, and I’ll get back to you soon.', send:'Send an email', copy:'Copy email', copied:'Email copied', copyHint:'Copy it manually: a.essam.rashwan@gmail.com',
 } : {
-  role:'استراتيجي تسويق ومسوق أداء', heroA:'تسويق مبني على ', heroB:'فهم مشروعك', heroC:'، مش على التخمين.', intro:'بشتغل مع أصحاب المشاريع من أول ما نفهم السوق والعميل، لحد الخطة والمحتوى والإعلانات. وبعدها بنراجع النتايج ونطوّر.',
+  role:'استراتيجي تسويق ومسوق أداء', metaDesc:'أحمد رشوان، استراتيجي تسويق ومسوق أداء في مصر. خطط تسويق ومحتوى وإعلانات Meta للمشاريع في مصر والدول العربية.', heroA:'تسويق مبني على ', heroB:'فهم مشروعك', heroC:'، مش على التخمين.', intro:'بشتغل مع أصحاب المشاريع من أول ما نفهم السوق والعميل، لحد الخطة والمحتوى والإعلانات. وبعدها بنراجع النتايج ونطوّر.',
   meta:'بشتغل مع مشاريع في مصر والدول العربية', tools:'أدوات بشتغل بيها كل يوم',
   services:'أقدر أساعدك في إيه', servicesLead:'أنا مسؤول عن الاستراتيجية والتخطيط والإعلانات والتوجيه الإبداعي، ومعايا فريق صغير بيتولى التصميم وكتابة المحتوى.',
   work:'شغل اشتغلت عليه', workLead:'مشاريع حقيقية في مجالات مختلفة. افتح أي مشروع وشوف التفاصيل والتصميمات والكابشنات.',
@@ -57,7 +57,7 @@ const services = [
 
 const arPath=basePath('/ar/'); const enPath=basePath('/en/');
 ---
-<BaseLayout lang={L} title={en?'Ahmed Rashwan | Marketing Strategist & Performance Marketer':'أحمد رشوان | استراتيجي تسويق ومسوق أداء'} description={copy.intro} canonical={Astro.site?new URL(basePath(root),Astro.site).href:undefined} alternateAr={Astro.site?new URL(arPath,Astro.site).href:undefined} alternateEn={Astro.site?new URL(enPath,Astro.site).href:undefined}>
+<BaseLayout lang={L} title={en?'Ahmed Rashwan | Marketing Strategist & Performance Marketer':'أحمد رشوان | استراتيجي تسويق ومسوق أداء'} description={copy.metaDesc} canonical={Astro.site?new URL(basePath(root),Astro.site).href:undefined} alternateAr={Astro.site?new URL(arPath,Astro.site).href:undefined} alternateEn={Astro.site?new URL(enPath,Astro.site).href:undefined}>
 <main class="page-main">
 <div id="top"></div>
 <section class="hero-shell">
@@ -99,7 +99,7 @@ const arPath=basePath('/ar/'); const enPath=basePath('/en/');
 <section class="section work-section" id="work"><div class="wrap">
   <div class="section-heading" data-reveal><div><p class="eyebrow">02 — {en?'Work':'أعمالي'}</p><h2>{copy.work}</h2></div><p>{copy.workLead}</p></div>
   <div class="project-grid">{projects.map((project,index)=><a class="project-card" href={basePath(`/${L}/projects/${project.slug}/`)} data-reveal>
-    <div class="project-image"><Picture src={project.cover} alt="" widths={[400,800]} sizes="(max-width: 700px) 100vw, (max-width: 1050px) 50vw, 33vw" formats={['avif','webp']} loading="lazy" decoding="async"/><span class="project-index">0{index+1}</span></div>
+    <div class="project-image"><Picture src={project.cover} alt={project.name[L]} widths={[400,800]} sizes="(max-width: 700px) 100vw, (max-width: 1050px) 50vw, 33vw" formats={['avif','webp']} loading="lazy" decoding="async"/><span class="project-index">0{index+1}</span></div>
     <div class="project-card-body"><p class="project-sector">{project.sector[L]}</p><h3>{project.name[L]}</h3><p class="project-summary">{project.summary[L]}</p>
       <div class="project-foot"><div class="chip-row">{project.tags[L].map(tag=><span>{tag}</span>)}</div><span class="project-arrow" aria-hidden="true">↗</span></div>
     </div></a>)}</div>

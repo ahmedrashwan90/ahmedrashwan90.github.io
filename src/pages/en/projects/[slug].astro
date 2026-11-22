@@ -9,7 +9,7 @@ import ProjectDetails from "../../../components/ProjectDetails.astro";
 import { Picture } from 'astro:assets';
 export function getStaticPaths(){return projects.map(project=>({params:{slug:project.slug},props:{project}}))}
 const {project}=Astro.props;
-const title=`${project.name.en} — Ahmed Rashwan | Marketing Strategist & Performance Marketer`;
+const title=`${project.name.en} — Ahmed Rashwan | Marketing Portfolio`;
 const description=project.summary.en;
 const root=`/en/projects/${project.slug}/`;
 const canonical=Astro.site?new URL(basePath(root),Astro.site).href:undefined;
