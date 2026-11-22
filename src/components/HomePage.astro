@@ -77,7 +77,7 @@ const arPath=basePath('/ar/'); const enPath=basePath('/en/');
     </div>
     <div class="portrait-wrap" data-hero-in>
       <div class="portrait-ring" aria-hidden="true"></div>
-      <div class="portrait-frame" data-portrait><Picture src={portrait} alt={en?'Portrait of Ahmed Rashwan':'صورة أحمد رشوان'} widths={[320,640]} sizes="(max-width: 720px) 60vw, 360px" formats={['avif','webp']} loading="eager" fetchpriority="high"/></div>
+      <div class="portrait-frame" data-portrait><Picture src={portrait} alt={en?'Portrait of Ahmed Rashwan':'صورة أحمد رشوان'} widths={[480,800,1100]} sizes="(max-width: 819px) 95vw, 440px" formats={['avif','webp']} quality={88} loading="eager" fetchpriority="high"/></div>
       <div class="float-chip chip-top"><b>01</b>{en?'Strategy first':'الاستراتيجية أولًا'}</div>
       <div class="float-chip chip-side"><span>Meta Ads</span><span>{en?'Content':'محتوى'}</span><span>{en?'Growth':'نمو'}</span></div>
       <div class="float-card"><span class="float-dot" aria-hidden="true"></span>{en?'Research → Plan → Execute → Optimise':'بحث ← تخطيط ← تنفيذ ← تحسين'}</div>
