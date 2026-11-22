@@ -23,7 +23,7 @@ for(const block of blocks(gym,/^## \d+\. /m)){
 // Beauty Life: numbered posts in captions/README.md, matched visually to designs. Unmatched posts and reels are skipped.
 const beautyMap={1:"q-switch-tattoo.jpeg",3:"olidia-collagen.jpeg",5:"rich-p-skin-booster.jpeg",7:"new-year-50.jpeg",9:"candela-right-place.jpeg",10:"jawline-lips-chin-filler.jpeg",11:"black-friday-50.jpeg"};
 // Carousel posts: extra slides in the order they appear in the Facebook post (checked 22 Nov 2026).
-const beautySlides={9:["result-device-team.jpeg","ready-to-start-whatsapp.jpeg"]};
+const beautySlides={9:["laser-experience.jpeg","result-device-team.jpeg","ready-to-start-whatsapp.jpeg"]};
 const beauty=read("03-beauty-life-clinics/captions/README.md");
 for(const block of blocks(beauty,/^## (?=\d+\. )/m)){
  const n=Number(block.match(/^(\d+)\./)?.[1]),file=beautyMap[n],source=block.match(/\*\*الرابط:\*\* (https?:\S+)/)?.[1]; if(!file||!source)continue;
